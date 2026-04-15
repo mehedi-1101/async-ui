@@ -52,8 +52,11 @@ export default function ListPage() {
       <div className="max-w-6xl mx-auto px-4 py-10">
 
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Pokédex</h1>
-          <p className="text-gray-400 mt-1 text-sm">Original 151 — click any card for details</p>
+          <div className="flex items-center justify-center gap-3 mb-1">
+            <img src="/pokeball.svg" alt="" className="w-9 h-9" />
+            <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Pokémon Explorer</h1>
+          </div>
+          <p className="text-gray-400 text-sm">Original 151 — click any card for details</p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -80,11 +83,22 @@ export default function ListPage() {
           </div>
         </div>
 
-        <div className="mb-5">
-          <span className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium ${mode === 'raw' ? 'bg-gray-100 text-gray-600' : 'bg-blue-50 text-blue-600'}`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${mode === 'raw' ? 'bg-gray-400' : 'bg-blue-400'}`} />
-            {mode === 'raw' ? 'Manual fetch · AbortController cancels stale requests' : 'React Query · automatic caching, instant back-navigation'}
-          </span>
+        <div className={`mb-5 rounded-xl border px-4 py-3 text-sm ${mode === 'raw' ? 'bg-gray-50 border-gray-200 text-gray-600' : 'bg-blue-50 border-blue-100 text-blue-700'}`}>
+          {mode === 'raw' ? (
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6">
+              <span className="font-semibold text-gray-800">Raw Fetch</span>
+              <span>Fetches on mount, cancels on unmount via <code className="font-mono text-xs bg-gray-200 px-1 rounded">AbortController</code></span>
+              <span>No cache — back-navigation re-fetches</span>
+              <span>Watch cancelled requests in DevTools → Network</span>
+            </div>
+          ) : (
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6">
+              <span className="font-semibold text-blue-800">React Query</span>
+              <span>Fetches once, caches the result automatically</span>
+              <span>Back-navigation is instant — served from cache</span>
+              <span>Retry + background refresh built in</span>
+            </div>
+          )}
         </div>
 
         {mode === 'raw' ? <RawGrid query={query} /> : <QueryGrid query={query} />}
