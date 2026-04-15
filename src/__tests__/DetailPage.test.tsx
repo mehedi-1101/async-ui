@@ -10,7 +10,10 @@ vi.mock('../api/pokemon')
 const mockDetail = {
   id: 1,
   name: 'bulbasaur',
-  sprites: { front_default: 'https://example.com/bulbasaur.png' },
+  sprites: {
+    front_default: 'https://example.com/bulbasaur.png',
+    other: { 'official-artwork': { front_default: 'https://example.com/bulbasaur-hd.png' } },
+  },
   types: [{ type: { name: 'grass' } }, { type: { name: 'poison' } }],
   height: 7,
   weight: 69,

@@ -15,20 +15,23 @@ const mockList = [
 const mockDetail = {
   id: 1,
   name: 'bulbasaur',
-  sprites: { front_default: 'https://example.com/bulbasaur.png' },
+  sprites: {
+    front_default: 'https://example.com/bulbasaur.png',
+    other: { 'official-artwork': { front_default: 'https://example.com/bulbasaur-hd.png' } },
+  },
   types: [{ type: { name: 'grass' } }],
   height: 7,
   weight: 69,
   base_experience: 64,
 }
 
-function renderListPage() {
+function renderListPage(initialEntries = ['/']) {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })
   return render(
     <QueryClientProvider client={client}>
-      <MemoryRouter>
+      <MemoryRouter initialEntries={initialEntries}>
         <ListPage />
       </MemoryRouter>
     </QueryClientProvider>
@@ -79,6 +82,24 @@ describe('ListPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }))
 
     await waitFor(() => expect(api.fetchPokemonList).toHaveBeenCalledTimes(2))
+  })
+
+  it('shows skeleton cards in react query mode while loading', () => {
+    vi.mocked(api.fetchPokemonList).mockReturnValue(new Promise(() => {}))
+
+    renderListPage(['/?mode=query'])
+
+    const skeletons = document.querySelectorAll('.animate-pulse')
+    expect(skeletons.length).toBeGreaterThan(0)
+  })
+
+  it('shows pokemon cards in react query mode after data loads', async () => {
+    vi.mocked(api.fetchPokemonList).mockResolvedValue(mockList)
+    vi.mocked(api.fetchPokemonDetail).mockResolvedValue(mockDetail)
+
+    renderListPage(['/?mode=query'])
+
+    await waitFor(() => expect(screen.getByText('bulbasaur')).toBeInTheDocument())
   })
 
   it('shows empty state when search has no match', async () => {
