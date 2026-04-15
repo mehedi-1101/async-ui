@@ -42,7 +42,7 @@ export default function DetailPage() {
         <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="bg-gray-50 flex items-center justify-center py-8">
             <img
-              src={data?.sprites.front_default}
+              src={data?.sprites.other['official-artwork'].front_default ?? data?.sprites.front_default}
               alt={data?.name}
               className="w-44 h-44 object-contain drop-shadow-md"
             />
