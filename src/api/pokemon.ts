@@ -12,7 +12,10 @@ export type PokemonType = {
 export type PokemonDetail = {
   id: number
   name: string
-  sprites: { front_default: string }
+  sprites: {
+    front_default: string
+    other: { 'official-artwork': { front_default: string } }
+  }
   types: PokemonType[]
   height: number
   weight: number
