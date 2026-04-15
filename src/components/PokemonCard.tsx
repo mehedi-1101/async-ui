@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { fetchPokemonDetail, type PokemonListItem } from '../api/pokemon'
-import { typeColors } from '../lib/typeColors'
+import { typeColors, typeBg } from '../lib/typeColors'
 import SkeletonCard from './SkeletonCard'
 
 type Props = {
@@ -18,15 +18,18 @@ export default function PokemonCard({ pokemon }: Props) {
 
   if (isLoading || !data) return <SkeletonCard />
 
+  const primaryType = data.types[0].type.name
+  const cardBg = typeBg[primaryType] ?? 'bg-gray-50'
+
   return (
     <div
       onClick={() => navigate(`/pokemon/${pokemon.name}`)}
-      className="rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-5 flex flex-col items-center gap-2 cursor-pointer"
+      className={`rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-5 flex flex-col items-center gap-2 cursor-pointer ${cardBg}`}
     >
       <img
-        src={data.sprites.front_default}
+        src={data.sprites.other['official-artwork'].front_default ?? data.sprites.front_default}
         alt={data.name}
-        className="w-28 h-28 object-contain"
+        className="w-28 h-28 object-contain drop-shadow-sm"
       />
       <p className="font-semibold capitalize text-gray-800">{data.name}</p>
       <p className="text-xs text-gray-400 font-mono">#{String(data.id).padStart(3, '0')}</p>
