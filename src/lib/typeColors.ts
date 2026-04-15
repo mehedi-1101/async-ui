@@ -18,3 +18,24 @@ export const typeColors: Record<string, string> = {
   ghost: 'bg-violet-100 text-violet-600',
   steel: 'bg-slate-100 text-slate-600',
 }
+
+export const typeBg: Record<string, string> = {
+  fire: 'bg-orange-50',
+  water: 'bg-blue-50',
+  grass: 'bg-green-50',
+  electric: 'bg-yellow-50',
+  psychic: 'bg-pink-50',
+  ice: 'bg-cyan-50',
+  dragon: 'bg-indigo-50',
+  dark: 'bg-gray-100',
+  fairy: 'bg-rose-50',
+  normal: 'bg-gray-50',
+  fighting: 'bg-red-50',
+  flying: 'bg-sky-50',
+  poison: 'bg-purple-50',
+  ground: 'bg-amber-50',
+  rock: 'bg-stone-50',
+  bug: 'bg-lime-50',
+  ghost: 'bg-violet-50',
+  steel: 'bg-slate-50',
+}
