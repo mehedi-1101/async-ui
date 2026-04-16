@@ -7,20 +7,30 @@ type State = {
   error: string | null
 }
 
+const listCache = new Map<string, PokemonListItem[]>()
+
+export const clearListCache = () => listCache.clear()
+
 export function usePokemonList(query: string) {
-  const [state, setState] = useState<State>({
-    data: null,
-    loading: true,
-    error: null,
+  const [state, setState] = useState<State>(() => {
+    const cached = listCache.get('pokemon-list')
+    return { data: cached ?? null, loading: !cached, error: null }
   })
 
   const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
+    if (retryCount === 0 && listCache.has('pokemon-list')) return
+
+    if (retryCount > 0) listCache.delete('pokemon-list')
+
     const controller = new AbortController()
 
     fetchPokemonList(controller.signal)
-      .then(data => setState({ data, loading: false, error: null }))
+      .then(data => {
+        listCache.set('pokemon-list', data)
+        setState({ data, loading: false, error: null })
+      })
       .catch(err => {
         if (err.name === 'AbortError') return
         setState({ data: null, loading: false, error: err.message })
