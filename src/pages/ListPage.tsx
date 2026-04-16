@@ -88,7 +88,7 @@ export default function ListPage() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6">
               <span className="font-semibold text-gray-800">Raw Fetch</span>
               <span>Fetches on mount, cancels on unmount via <code className="font-mono text-xs bg-gray-200 px-1 rounded">AbortController</code></span>
-              <span>No cache — back-navigation re-fetches</span>
+              <span>Manual memory cache — second mount is instant, retry clears it</span>
               <span>Watch cancelled requests in DevTools → Network</span>
             </div>
           ) : (
