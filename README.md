@@ -25,6 +25,8 @@ The toggle on the list page lets you switch between two implementations — **Ra
 ### Raw Fetch
 Implemented manually in `src/hooks/usePokemonList.ts`. Tracks `loading`, `error`, and `data` in local state. Uses an `AbortController` inside `useEffect` — when the component unmounts or re-fetches, the old request gets cancelled. You can see this in DevTools → Network as requests with a strikethrough.
 
+The hook also has a module-level memory cache (`Map`). First load fetches from the network and stores the result. Any subsequent mount reads from cache instantly — no request. Hitting Retry clears the cache and forces a fresh fetch.
+
 One non-obvious thing: the hook uses a `retryCount` number as the `useEffect` dependency instead of a callback function. This is because ESLint's react-hooks plugin (v7) traces through function calls and flags `setState` even inside `useCallback` wrappers. Incrementing a number re-triggers the effect cleanly with no lint violations.
 
 ### React Query
@@ -52,7 +54,8 @@ Both hooks return the same shape (`list`, `loading`, `error`, `refetch`) so `Lis
 |---|---|
 | Load the page | Skeleton cards appear first, then data fills in |
 | DevTools → Network → Offline | Error message shows, Retry button works |
-| Type quickly in search | DevTools Network shows cancelled (strikethrough) requests |
+| Type quickly in search | Results filter instantly — no network requests (client-side) |
+| Navigate away while page is loading | DevTools Network shows cancelled (strikethrough) request |
 | Search `bul` | Only Bulbasaur visible |
 | Search `zzz` | Empty state message |
 | Switch to React Query → click a card → back | Still on React Query mode |
@@ -132,4 +135,4 @@ All tests mock `src/api/pokemon.ts` at the module level — no real network call
 pnpm test:coverage
 ```
 
-Current coverage: 85%+
+Current coverage: 86%+
