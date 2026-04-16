@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import { usePokemonList } from '../hooks/usePokemonList'
+import { usePokemonList, clearListCache } from '../hooks/usePokemonList'
 import * as api from '../api/pokemon'
 
 vi.mock('../api/pokemon')
@@ -13,6 +13,7 @@ const mockList = [
 
 beforeEach(() => {
   vi.resetAllMocks()
+  clearListCache()
 })
 
 describe('usePokemonList', () => {

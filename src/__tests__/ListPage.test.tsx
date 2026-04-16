@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import ListPage from '../pages/ListPage'
 import * as api from '../api/pokemon'
+import { clearListCache } from '../hooks/usePokemonList'
 
 vi.mock('../api/pokemon')
 
@@ -40,6 +41,7 @@ function renderListPage(initialEntries = ['/']) {
 
 beforeEach(() => {
   vi.resetAllMocks()
+  clearListCache()
 })
 
 describe('ListPage', () => {
